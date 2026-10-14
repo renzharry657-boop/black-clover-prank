@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>System Alert — Prank</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; background: #020806; color: #54ff8b;
+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    display: grid; place-items: center; padding: 18px;
+  }
+  .screen {
+    width: min(100%, 620px); border: 1px solid #1d8f4d; border-radius: 14px;
+    padding: 22px; background: radial-gradient(ellipse at top, #092416, #020806 65%);
+    box-shadow: 0 0 28px #00ff6622;
+  }
+  .top { display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    border-bottom:1px solid #1d8f4d; padding-bottom:12px; font-size:12px; }
+  .dot { color:#ffcb55; }
+  h1 { font-size: clamp(22px, 6vw, 34px); margin: 24px 0 10px; letter-spacing: 1px; }
+  .warning { color:#ffd36b; }
+  p { line-height:1.6; color:#b8ffd0; }
+  .terminal { margin:20px 0; padding:14px; border:1px solid #145d32;
+    background:#010402; min-height:125px; font-size:13px; line-height:1.8; }
+  .bar { height:10px; border:1px solid #2ebf66; border-radius:99px; overflow:hidden; margin:12px 0; }
+  .fill { height:100%; width:0%; background:#45ff84; transition:width .25s; }
+  .percent { font-size:12px; color:#9dffbd; }
+  button { background:#0b321b; color:#7dffa4; border:1px solid #36db71;
+    border-radius:8px; padding:12px 16px; font:inherit; cursor:pointer; width:100%; }
+  button:focus { outline:2px solid #fff; outline-offset:3px; }
+  .hidden { display:none; }
+  .reveal { margin-top:18px; padding:18px; border:1px dashed #ffcf5b;
+    color:#ffe6a4; text-align:center; border-radius:10px; }
+  footer { color:#679a78; font-size:11px; margin-top:18px; text-align:center; }
+</style>
+</head>
+<body>
+<main class="screen">
+  <div class="top"><span>◈ SECURE TERMINAL</span><span class="dot">● SIMULATION MODE</span></div>
+  <h1>⚠ SYSTEM ALERT</h1>
+  <p class="warning">Unusual activity simulation detected.</p>
+  <p>Initializing pretend diagnostic sequence. This is a visual prank only — no device scan is happening.</p>
+  <div class="terminal" id="terminal" aria-live="polite">
+    <div>&gt; Booting prank interface...</div>
+    <div>&gt; Connecting to imaginary mainframe...</div>
+    <div>&gt; Waiting for user confirmation<span class="blink">_</span></div>
+  </div>
+  <div class="bar"><div class="fill" id="fill"></div></div>
+  <div class="percent" id="percent">READY · 0%</div>
+  <button id="start">RUN FAKE DIAGNOSTIC</button>
+  <section id="reveal" class="reveal hidden">
+    <h2>🤣 PRANK LANG!</h2>
+    <p>Walang na-hack. Walang na-scan. Chill ka lang, tropa! 😎</p>
+    <button id="again">PLAY AGAIN</button>
+  </section>
+  <footer>Harmless visual simulation · No tracking · No data collection</footer>
+</main>
+<script>
+const start = document.getElementById('start');
+const again = document.getElementById('again');
+const terminal = document.getElementById('terminal');
+const fill = document.getElementById('fill');
+const percent = document.getElementById('percent');
+const reveal = document.getElementById('reveal');
+let timer = null;
+function run() {
+  clearInterval(timer);
+  start.disabled = true;
+  start.textContent = 'RUNNING SIMULATION...';
+  reveal.classList.add('hidden');
+  terminal.innerHTML = '';
+  const lines = [
+    '> Starting pretend diagnostic...',
+    '> Checking imaginary firewall... OK',
+    '> Searching for suspicious memes... FOUND 😂',
+    '> Analyzing level of kalokohan...',
+    '> Result: TROPA DETECTED'
+  ];
+  let progress = 0, line = 0;
+  timer = setInterval(() => {
+    progress = Math.min(progress + 10, 100);
+    fill.style.width = progress + '%';
+    percent.textContent = 'SIMULATED PROGRESS · ' + progress + '%';
+    if (line < lines.length && progress >= (line + 1) * 20) {
+      const row = document.createElement('div');
+      row.textContent = lines[line++];
+      terminal.appendChild(row);
+    }
+    if (progress >= 100) {
+      clearInterval(timer);
+      start.disabled = false;
+      start.textContent = 'RUN AGAIN';
+      reveal.classList.remove('hidden');
+      percent.textContent = 'COMPLETE · JUST A PRANK';
+    }
+  }, 350);
+}
+start.addEventListener('click', run);
+again.addEventListener('click', () => {
+  fill.style.width = '0%'; percent.textContent = 'READY · 0%';
+  start.textContent = 'RUN FAKE DIAGNOSTIC';
+  terminal.innerHTML = '<div>&gt; Booting prank interface...</div><div>&gt; Connecting to imaginary mainframe...</div><div>&gt; Waiting for user confirmation<span class="blink">_</span></div>';
+  reveal.classList.add('hidden');
+  start.scrollIntoView({behavior:'smooth', block:'center'});
+});
+</script>
+</body>
+</html>
